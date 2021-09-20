@@ -1,0 +1,9 @@
+.metals
+.venv
+data/binance/
+notebooks/.ipynb_aml_checkpoints/
+notebooks/.config/
+.amlignore
+*.amltmp
+__pycache__
+.DS_Store
