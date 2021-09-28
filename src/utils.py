@@ -5,6 +5,7 @@ import numpy as np
 def plot_env(env):
     trades = np.array(env.actions_memory)
     trades = list(trades - ((np.max(trades) - 1) / 2))
+
     figure, axes = plt.subplots(nrows=2, ncols=2)
     axes[0, 0].plot(env.df["ETF Price"])
     axes[0, 0].set_title("Stock price")
@@ -17,4 +18,4 @@ def plot_env(env):
     axes[1, 1].plot(env.rewards_memory)
     axes[1, 1].set_title("Rewards")
 
-    return figure
+    return
