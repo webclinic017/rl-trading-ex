@@ -4,18 +4,21 @@ import random
 import torch
 
 
-def noise_gaussian():
-    return np.random.normal(0, 1, 100)
-
-
 def update_target(net, net_target, tau):
     for param, param_target in zip(net.parameters(), net_target.parameters()):
         param_target.data.copy_(param_target.data * (1.0 - tau) + param.data * tau)
 
 
+def noise_normal(sigma):
+    noise = np.random.normal(0, sigma)
+    return noise
+
+
 class ReplayBuffer:
-    def __init__(self, buffer_size):
-        self.buffer = collections.deque(maxlen=buffer_size)
+    def __init__(self, buffer_size, batch_size):
+        self.buffer_size = buffer_size
+        self.batch_size = batch_size
+        self.buffer = collections.deque(maxlen=self.buffer_size)
 
     def size(self):
         return len(self.buffer)
@@ -23,8 +26,8 @@ class ReplayBuffer:
     def add(self, observation):
         self.buffer.append(observation)
 
-    def sample(self, batch_size):
-        batch = random.sample(self.buffer, batch_size)
+    def sample(self):
+        batch = random.sample(self.buffer, self.batch_size)
         states, actions, rewards, next_states, done_masks = [], [], [], [], []
 
         for observation in batch:
@@ -39,10 +42,10 @@ class ReplayBuffer:
                 done_mask = 1
             done_masks.append([done_mask])
 
-        states = torch.stack(states).to(torch.float)
-        actions = torch.tensor(actions, dtype=torch.float)
-        rewards = torch.tensor(rewards, dtype=torch.float)
+        states = torch.stack(states)
+        actions = torch.tensor(actions)
+        rewards = torch.tensor(rewards)
         next_states = torch.tensor(next_states, dtype=torch.float)
-        done_masks = torch.tensor(done_masks, dtype=torch.float)
+        done_masks = torch.tensor(done_masks)
 
         return states, actions, rewards, next_states, done_masks

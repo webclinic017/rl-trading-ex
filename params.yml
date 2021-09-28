@@ -1,0 +1,107 @@
+config:
+    data_path: "data"
+
+env:
+    stock:
+        max_trade: 5
+        max_short: 3
+        initial_amount: 10
+        transaction_cost: 0.01
+        reward_scaling: 1
+        episode_len: 100
+        seed: 42
+    portfolio:
+        max_trade: 0.33
+        initial_amount: 10
+        transaction_cost: 0.01
+        reward_scaling: 1
+        episode_len: 100
+        seed: 42
+
+train:
+    ddqn:
+        state_space: 11
+        max_trade: 5
+        num_hidden: 64
+        lr: 0.01
+        gamma: 0.98
+        var_k: 0.05
+        tau: 0.05
+        eps: 0.995
+        eps_min: 0.05
+        eps_decay: 0.9
+        buffer_size: 5000
+        batch_size: 64
+        update_freq: 1
+        train_cycle: 5
+        iters: 30
+    ddpg:
+        state_space: 11
+        num_hidden_p: 64
+        num_hidden_q: 64
+        lr_p: 0.01
+        lr_q: 0.01
+        gamma: 0.98
+        var_k: 0.05
+        tau: 0.05
+        act_noise: 0.1
+        buffer_size: 5000
+        batch_size: 64
+        update_freq: 1
+        train_cycle: 5
+        iters: 30
+        
+tune:
+    ddqn:
+        hidden_size:
+            - 32
+            - 64
+            - 128
+        lr:
+            min: 0.001
+            max: 0.01
+        gamma:
+            min: 0.8
+            max: 0.99
+        tau:
+            min: 0.01
+            max: 0.1
+        eps:
+            min: 0.5
+            max: 0.99
+        iters:
+            min: 20
+            max: 100
+        train_cycle:
+            min: 1
+            max: 10
+    ddpg:
+        num_hidden_p:
+            - 32
+            - 64
+            - 128
+        num_hidden_q:
+            - 32
+            - 64
+            - 128
+        lr_p:
+            min: 0.001
+            max: 0.01
+        lr_q:
+            min: 0.001
+            max: 0.01
+        gamma:
+            min: 0.8
+            max: 0.99
+        tau:
+            min: 0.01
+            max: 0.1
+        act_noise:
+            min: 0.01
+            max: 0.1
+        iters:
+            min: 20
+            max: 100
+        train_cycle:
+            min: 1
+            max: 10

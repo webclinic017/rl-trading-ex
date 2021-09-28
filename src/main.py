@@ -1,16 +1,10 @@
-import sys
-
-sys.path.append("../..")
-
 from datetime import datetime
-from src.rl_trading.data_process import DataProcessor
-from src.rl_trading.ddpg import DDPG
-from src.rl_trading.ddqn import DDQN
-from src.rl_trading.envs import StockTradingEnv, PortfolioAllocationEnv
-import json  # TODO: Check
-import matplotlib.pyplot as plt  # TODO: Plot results
-import os
-import pandas as pd
+from data import DataProcessor
+from ddpg import DDPG
+from ddqn import DDQN
+from env import StockTradingEnv, PortfolioAllocationEnv
+import matplotlib.pyplot as plt
+# import pandas as pd
 from ray import tune
 from ray.tune.integration.wandb import wandb_mixin
 from ray.tune.schedulers.async_hyperband import ASHAScheduler
@@ -19,10 +13,9 @@ import warnings
 import yaml
 
 warnings.filterwarnings("ignore", category=UserWarning)
+plt.ioff()
 
-plt.ioff() # TODO: CHECK THIS FUNCTION
-
-def get_data(parameters):
+def load_data(parameters):
     data_path = parameters["config"]["data_path"]
 
     train_path = data_path + "/train.csv"
